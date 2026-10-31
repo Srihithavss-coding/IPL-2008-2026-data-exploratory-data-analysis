@@ -26,7 +26,7 @@ unique_batting_season_key,PASS,0,0,,ball_by_ball_data.csv
 unique_bowling_season_key,PASS,0,0,,ball_by_ball_data.csv
 unique_team_season_key,PASS,0,0,,ball_by_ball_data.csv
 finite_exported_rates,PASS,all rates finite or null,no infinities or invalid denominator results,,ball_by_ball_data.csv
-metadata_join_row_multiplication,PASS,288226,288226,No metadata table was available or joined.,ball_by_ball_data.csv
+metadata_join_row_multiplication,INFO,not applicable,no metadata join,No metadata join was performed; match metadata is unavailable.,ball_by_ball_data.csv
 match_metadata_availability,INFO,not available,verified match-level source,"Dates, venues, winners, and toss data are not exported.",ball_by_ball_data.csv
 missingness_season_id,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
 missingness_match_id,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
@@ -58,6 +58,18 @@ missingness_penalty_runs,INFO,0 / 288226 (0.0000%),reported; not imputed,Source 
 missingness_wicket_kind,INFO,273886 / 288226 (95.0247%),reported; not imputed,Expected missing on deliveries without a dismissal; consistency checked.,ball_by_ball_data.csv
 missingness_is_super_over,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
 missingness_innings,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+regulation_player_out_records_accounted_for,PASS,"{'source_player_out_records_including_retired_hurt': 14309, 'source_dismissals_excluding_retired_hurt': 14290, 'batting_stat_dismissals': 14290, 'unmatched_participant_records': 0}",all player_out records join to a batting participant; retired hurt is excluded from dismissal counts,,ball_by_ball_data.csv
+dismissals_reconcile_by_season_player,PASS,0,0,Examples: {},ball_by_ball_data.csv
+batter_runs_reconcile_by_season_player,PASS,0,0,Examples: {},ball_by_ball_data.csv
+batter_innings_reconcile_by_season_player,PASS,0,0,Examples: {},ball_by_ball_data.csv
+batter_dimension_includes_all_source_participants,PASS,0,0,Missing names: [],ball_by_ball_data.csv
+bowler_wickets_reconcile_by_season_bowler,PASS,0,0,Examples: {},ball_by_ball_data.csv
+bowler_runs_conceded_reconcile_by_season_bowler,PASS,0,0,Examples: {},ball_by_ball_data.csv
+team_runs_reconcile_by_season_team,PASS,0,0,Examples: {},ball_by_ball_data.csv
+team_innings_reconcile_by_season_team,PASS,0,0,Examples: {},ball_by_ball_data.csv
+known_missed_dismissal_A_Nel_2008,PASS,1,1,,ball_by_ball_data.csv
+known_missed_dismissal_S_Tyagi_2009,PASS,1,1,,ball_by_ball_data.csv
+known_missed_dismissal_DA_Miller_2020,PASS,1,1,,ball_by_ball_data.csv
 unique_export_key_ipl_deliveries_clean.csv,PASS,0,0,"Key: ['season_id', 'match_id', 'innings', 'over_number', 'ball_number']",ball_by_ball_data.csv
 unique_export_key_ipl_innings_summary.csv,PASS,0,0,"Key: ['season_id', 'match_id', 'innings', 'is_super_over']",ball_by_ball_data.csv
 unique_export_key_ipl_batting_season_stats.csv,PASS,0,0,"Key: ['season_id', 'batter']",ball_by_ball_data.csv
@@ -68,3 +80,13 @@ unique_export_key_dim_team.csv,PASS,0,0,Key: ['team_id'],ball_by_ball_data.csv
 unique_export_key_dim_batter.csv,PASS,0,0,Key: ['batter'],ball_by_ball_data.csv
 unique_export_key_dim_bowler.csv,PASS,0,0,Key: ['bowler'],ball_by_ball_data.csv
 unique_export_key_unmapped_team_ids.csv,PASS,0,0,Key: ['team_id'],ball_by_ball_data.csv
+export_readback_ipl_deliveries_clean.csv,PASS,"{'rows': 288226, 'schema_matches': True}","{'rows': 288226, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_ipl_innings_summary.csv,PASS,"{'rows': 2452, 'schema_matches': True}","{'rows': 2452, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_ipl_batting_season_stats.csv,PASS,"{'rows': 2959, 'schema_matches': True}","{'rows': 2959, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_ipl_bowling_season_stats.csv,PASS,"{'rows': 2181, 'schema_matches': True}","{'rows': 2181, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_ipl_team_season_stats.csv,PASS,"{'rows': 166, 'schema_matches': True}","{'rows': 166, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_dim_season.csv,PASS,"{'rows': 19, 'schema_matches': True}","{'rows': 19, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_dim_team.csv,PASS,"{'rows': 14, 'schema_matches': True}","{'rows': 14, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_dim_batter.csv,PASS,"{'rows': 732, 'schema_matches': True}","{'rows': 732, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_dim_bowler.csv,PASS,"{'rows': 568, 'schema_matches': True}","{'rows': 568, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv
+export_readback_unmapped_team_ids.csv,PASS,"{'rows': 14, 'schema_matches': True}","{'rows': 14, 'schema_matches': True}",CSV read-back row count and column schema match the in-memory export table.,ball_by_ball_data.csv

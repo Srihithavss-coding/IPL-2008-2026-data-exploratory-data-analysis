@@ -9,6 +9,9 @@ Source: `ball_by_ball_data.csv` (288,226 delivery rows).
 - Batting and bowling tables: one row per season and batter/bowler, regulation innings only.
 - Team table: one row per season and numeric batting-team ID, regulation innings only.
 - Team names remain unmapped because no authoritative mapping was validated.
+- Delivery-level `total_runs` includes extras; batting `batter_runs_scored` excludes extras; innings and team totals include extras.
+- Batting, bowling, and team-season tables exclude super overs. Delivery and innings-summary exports retain super overs with `is_super_over`.
+- Power BI measures should exclude super overs by default when comparing delivery data with regulation batting, bowling, and team-season tables.
 - Match results, dates, venues, tosses, and title counts are omitted because no validated metadata source was available.
 
 ## Definitions
@@ -24,6 +27,23 @@ Source: `ball_by_ball_data.csv` (288,226 delivery rows).
 - Bowling strike rate: legal balls / credited wickets. Dot-ball percentage: dot balls / legal balls × 100.
 - Source over and ball indices are zero-based. Regulation phases: 0–5 powerplay, 6–14 middle, 15–19 death.
 - `overs_faced` and `overs_bowled` are decimal legal balls divided by six, not cricket over notation.
+
+## Example DAX measures
+
+The following delivery measures exclude super overs. Relate `dim_batter` to the delivery `batter` column and `dim_bowler` to `bowler` as needed.
+
+```DAX
+Regulation Runs = CALCULATE(SUM('ipl_deliveries_clean'[total_runs]), KEEPFILTERS('ipl_deliveries_clean'[is_super_over] = FALSE()))
+Regulation Wickets Lost = CALCULATE(COUNTROWS(FILTER('ipl_deliveries_clean', 'ipl_deliveries_clean'[is_wicket_lost] = TRUE())), KEEPFILTERS('ipl_deliveries_clean'[is_super_over] = FALSE()))
+Bowler-Creditable Wickets = CALCULATE(COUNTROWS(FILTER('ipl_deliveries_clean', 'ipl_deliveries_clean'[bowler_wickets] = TRUE())), KEEPFILTERS('ipl_deliveries_clean'[is_super_over] = FALSE()))
+Legal Balls = CALCULATE(COUNTROWS(FILTER('ipl_deliveries_clean', 'ipl_deliveries_clean'[is_legal_delivery] = TRUE())), KEEPFILTERS('ipl_deliveries_clean'[is_super_over] = FALSE()))
+Run Rate = DIVIDE([Regulation Runs] * 6, [Legal Balls])
+Batter Strike Rate = DIVIDE(CALCULATE(SUM('ipl_deliveries_clean'[batter_runs]), KEEPFILTERS('ipl_deliveries_clean'[is_super_over] = FALSE())) * 100, CALCULATE(COUNTROWS(FILTER('ipl_deliveries_clean', 'ipl_deliveries_clean'[is_batter_ball_faced] = TRUE())), KEEPFILTERS('ipl_deliveries_clean'[is_super_over] = FALSE())))
+Bowling Economy = DIVIDE(CALCULATE(SUM('ipl_deliveries_clean'[bowler_runs_conceded]), KEEPFILTERS('ipl_deliveries_clean'[is_super_over] = FALSE())) * 6, [Legal Balls])
+Dot-Ball Percentage = DIVIDE(CALCULATE(COUNTROWS(FILTER('ipl_deliveries_clean', 'ipl_deliveries_clean'[is_dot_ball] = TRUE())), KEEPFILTERS('ipl_deliveries_clean'[is_super_over] = FALSE())) * 100, [Legal Balls])
+```
+
+Use `is_wicket_lost` for innings wickets and `bowler_wickets` for credited bowling wickets; the generic `is_wicket` flag includes events that are not bowler-creditable.
 
 ## Exported files and columns
 
@@ -81,7 +101,7 @@ Rows: 288,226.
 
 ### `ipl_innings_summary.csv`
 
-Grain: one row per season, match, innings, and super-over flag.
+Grain: one row per season, match, innings, and super-over flag; super overs retained.
 
 | Column | Data type | Definition |
 |---|---|---|
@@ -90,7 +110,7 @@ Grain: one row per season, match, innings, and super-over flag.
 | `innings` | `int64` | Source innings identifier in delivery/innings tables; batter-match-innings appearance count in batting stats. |
 | `is_super_over` | `boolean` | Source Boolean distinguishing super-over deliveries. |
 | `team_batting_id` | `int64` | Source batting-team ID; canonical name is unverified. |
-| `total_runs` | `int64` | Delivery total in the fact table; sum of batter runs in batting stats; actual innings/team runs in summaries. |
+| `innings_runs` | `int64` | Actual innings total including extras; super overs are retained and explicitly flagged. |
 | `wickets_lost` | `Int64` | Sum of is_wicket_lost for the innings. |
 | `legal_balls` | `Int64` | Count of deliveries not flagged wide or no-ball. |
 | `overs_faced` | `Float64` | legal_balls divided by six (decimal overs, not cricket notation). |
@@ -108,21 +128,21 @@ Rows: 2,452.
 
 ### `ipl_batting_season_stats.csv`
 
-Grain: one row per season and batter.
+Grain: one row per season and batter; regulation participation includes batter and non-striker appearances.
 
 | Column | Data type | Definition |
 |---|---|---|
 | `season_id` | `int64` | Season identifier as supplied in the source. |
 | `batter` | `string` | Source batter name after whitespace trimming only. |
-| `total_runs` | `int64` | Delivery total in the fact table; sum of batter runs in batting stats; actual innings/team runs in summaries. |
-| `innings` | `int64` | Source innings identifier in delivery/innings tables; batter-match-innings appearance count in batting stats. |
-| `balls_faced` | `Int64` | Count of batter deliveries excluding wides; no-balls count as faced. |
+| `batter_runs_scored` | `int64` | Sum of striker batter_runs only; extras are excluded. |
+| `innings_batted` | `int64` | Count of regulation match-innings in which the player appears as batter or non-striker. |
+| `balls_faced` | `int64` | Count of batter deliveries excluding wides; no-balls count as faced. |
 | `fours` | `int64` | Count of deliveries with batter_runs equal to four. |
 | `sixes` | `int64` | Count of deliveries with batter_runs equal to six. |
-| `dismissals` | `int64` | Count of source player_out records excluding retired hurt. |
+| `dismissals` | `int64` | Count of dismissed-player records excluding retired hurt; includes dismissals while listed as non-striker. |
 | `strike_rate` | `float64` | 100 × total_runs / balls_faced; null when balls faced is zero. |
 
-Rows: 2,928.
+Rows: 2,959.
 
 ### `ipl_bowling_season_stats.csv`
 
@@ -146,14 +166,14 @@ Rows: 2,181.
 
 ### `ipl_team_season_stats.csv`
 
-Grain: one row per season and batting-team ID.
+Grain: one row per season and batting-team ID; regulation innings only.
 
 | Column | Data type | Definition |
 |---|---|---|
 | `season_id` | `int64` | Season identifier as supplied in the source. |
 | `team_batting_id` | `int64` | Source batting-team ID; canonical name is unverified. |
-| `innings` | `int64` | Source innings identifier in delivery/innings tables; batter-match-innings appearance count in batting stats. |
-| `total_runs` | `int64` | Delivery total in the fact table; sum of batter runs in batting stats; actual innings/team runs in summaries. |
+| `innings_count` | `int64` | Count of regulation innings for this season and batting-team ID. |
+| `team_runs` | `int64` | Sum of actual regulation innings runs including extras. |
 | `total_legal_balls` | `Int64` | Sum of legal balls across the team's regulation innings. |
 | `total_wickets_lost` | `Int64` | Sum of regulation innings wickets_lost for the team-season. |
 | `total_extras` | `int64` | Sum of extras in the team's regulation innings. |
@@ -197,7 +217,7 @@ Grain: one row per batter name.
 |---|---|---|
 | `batter` | `object` | Source batter name after whitespace trimming only. |
 
-Rows: 727.
+Rows: 732.
 
 ### `dim_bowler.csv`
 
@@ -222,7 +242,7 @@ Grain: one row per validation check or source-column missingness item.
 | `details` | `object` | Interpretation or limitation associated with the check. |
 | `source_path` | `object` | Source CSV filename, without a machine-specific absolute path. |
 
-Rows: 69.
+Rows: 91.
 
 ### `unmapped_team_ids.csv`
 

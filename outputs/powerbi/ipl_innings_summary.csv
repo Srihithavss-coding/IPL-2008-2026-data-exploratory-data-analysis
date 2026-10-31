@@ -1,4 +1,4 @@
-season_id,match_id,innings,is_super_over,team_batting_id,total_runs,wickets_lost,legal_balls,overs_faced,run_rate,fours,sixes,boundary_count,boundary_runs,extras,powerplay_runs,middle_over_runs,death_over_runs
+season_id,match_id,innings,is_super_over,team_batting_id,innings_runs,wickets_lost,legal_balls,overs_faced,run_rate,fours,sixes,boundary_count,boundary_runs,extras,powerplay_runs,middle_over_runs,death_over_runs
 2008,335982,1,False,6,222,3,120,20.0,11.1,15,14,29,144,17,61.0,93.0,68.0
 2008,335982,2,False,1,82,10,91,15.166666666666666,5.406593406593407,3,3,6,30,19,26.0,55.0,1.0
 2008,335983,1,False,129,240,5,120,20.0,12.0,20,16,36,176,6,53.0,108.0,79.0
