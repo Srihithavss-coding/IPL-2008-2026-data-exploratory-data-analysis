@@ -1,0 +1,70 @@
+check_name,status,observed,expected,details,source_path
+working_copy_preserves_source_row_count,PASS,288226,288226,No source rows are removed.,ball_by_ball_data.csv
+exact_duplicate_rows,PASS,0,0,"Duplicate rows are reported, not silently deleted.",ball_by_ball_data.csv
+delivery_key_uniqueness,PASS,0,0,"Key: ['season_id', 'match_id', 'innings', 'over_number', 'ball_number']",ball_by_ball_data.csv
+one_season_per_match,PASS,0,0,,ball_by_ball_data.csv
+nonnegative_numeric_values,PASS,0,0,Negative-value counts by numeric column: {},ball_by_ball_data.csv
+batter_runs_plus_extras_equals_total_runs,PASS,0,0,,ball_by_ball_data.csv
+extra_components_reconcile,PASS,0,0,Five source extra components sum to extras.,ball_by_ball_data.csv
+wicket_flag_matches_dismissal_type,PASS,0,0,,ball_by_ball_data.csv
+dismissed_player_matches_wicket_flag,PASS,0,0,,ball_by_ball_data.csv
+team_id_mapping,WARN,"14 unresolved IDs: [1, 2, 3, 4, 5, 6, 129, 134, 252, 494, 614, 615, 1414, 1419]",Verified source mapping,No authoritative mapping was present or validated; IDs are retained.,ball_by_ball_data.csv
+player_name_case_variants,PASS,0,0,"Whitespace-trimmed batter, bowler, and non-striker labels were compared case-insensitively. Initials, abbreviations, and unverified aliases are not merged.",ball_by_ball_data.csv
+legal_delivery_definition,PASS,consistent,formula matches source fields,,ball_by_ball_data.csv
+dot_ball_definition,PASS,consistent,formula matches source fields,,ball_by_ball_data.csv
+batter_ball_faced_definition,PASS,consistent,formula matches source fields,,ball_by_ball_data.csv
+bowler_wicket_classification,PASS,consistent,formula matches source fields,,ball_by_ball_data.csv
+regulation_over_phase_coverage,PASS,0,0,Source over indices outside 0-19 are retained and reported.,ball_by_ball_data.csv
+innings_summary_key_unique,PASS,0,0,,ball_by_ball_data.csv
+innings_totals_reconcile_to_deliveries,PASS,0,0,,ball_by_ball_data.csv
+season_batter_runs_reconcile,PASS,369972,369972,,ball_by_ball_data.csv
+batting_strike_rates_finite,PASS,finite or null,no infinities,,ball_by_ball_data.csv
+bowler_wickets_reconcile,PASS,13113,13113,,ball_by_ball_data.csv
+bowling_rates_finite,PASS,finite or null,no infinities,,ball_by_ball_data.csv
+delivery_feature_reconciliation,PASS,"{'legal_delivery': 0, 'dot_ball': 0, 'bowler_runs_reconciliation': 0}",all zero,,ball_by_ball_data.csv
+unique_batting_season_key,PASS,0,0,,ball_by_ball_data.csv
+unique_bowling_season_key,PASS,0,0,,ball_by_ball_data.csv
+unique_team_season_key,PASS,0,0,,ball_by_ball_data.csv
+finite_exported_rates,PASS,all rates finite or null,no infinities or invalid denominator results,,ball_by_ball_data.csv
+metadata_join_row_multiplication,PASS,288226,288226,No metadata table was available or joined.,ball_by_ball_data.csv
+match_metadata_availability,INFO,not available,verified match-level source,"Dates, venues, winners, and toss data are not exported.",ball_by_ball_data.csv
+missingness_season_id,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_match_id,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_batter,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_bowler,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_non_striker,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_team_batting,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_team_bowling,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_over_number,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_ball_number,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_batter_runs,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_extras,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_total_runs,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_batsman_type,INFO,239 / 288226 (0.0829%),reported; not imputed,Optional source attribute; source missingness preserved.,ball_by_ball_data.csv
+missingness_bowler_type,INFO,339 / 288226 (0.1176%),reported; not imputed,Optional source attribute; source missingness preserved.,ball_by_ball_data.csv
+missingness_player_out,INFO,273886 / 288226 (95.0247%),reported; not imputed,Expected missing on deliveries without a dismissal; consistency checked.,ball_by_ball_data.csv
+missingness_fielders_involved,INFO,273886 / 288226 (95.0247%),reported; not imputed,May be absent where no fielder is involved; source values preserved.,ball_by_ball_data.csv
+missingness_is_wicket,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_is_wide_ball,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_is_no_ball,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_is_leg_bye,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_is_bye,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_is_penalty,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_wide_ball_runs,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_no_ball_runs,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_leg_bye_runs,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_bye_runs,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_penalty_runs,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_wicket_kind,INFO,273886 / 288226 (95.0247%),reported; not imputed,Expected missing on deliveries without a dismissal; consistency checked.,ball_by_ball_data.csv
+missingness_is_super_over,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+missingness_innings,INFO,0 / 288226 (0.0000%),reported; not imputed,Source missingness preserved; review according to field meaning.,ball_by_ball_data.csv
+unique_export_key_ipl_deliveries_clean.csv,PASS,0,0,"Key: ['season_id', 'match_id', 'innings', 'over_number', 'ball_number']",ball_by_ball_data.csv
+unique_export_key_ipl_innings_summary.csv,PASS,0,0,"Key: ['season_id', 'match_id', 'innings', 'is_super_over']",ball_by_ball_data.csv
+unique_export_key_ipl_batting_season_stats.csv,PASS,0,0,"Key: ['season_id', 'batter']",ball_by_ball_data.csv
+unique_export_key_ipl_bowling_season_stats.csv,PASS,0,0,"Key: ['season_id', 'bowler']",ball_by_ball_data.csv
+unique_export_key_ipl_team_season_stats.csv,PASS,0,0,"Key: ['season_id', 'team_batting_id']",ball_by_ball_data.csv
+unique_export_key_dim_season.csv,PASS,0,0,Key: ['season_id'],ball_by_ball_data.csv
+unique_export_key_dim_team.csv,PASS,0,0,Key: ['team_id'],ball_by_ball_data.csv
+unique_export_key_dim_batter.csv,PASS,0,0,Key: ['batter'],ball_by_ball_data.csv
+unique_export_key_dim_bowler.csv,PASS,0,0,Key: ['bowler'],ball_by_ball_data.csv
+unique_export_key_unmapped_team_ids.csv,PASS,0,0,Key: ['team_id'],ball_by_ball_data.csv
